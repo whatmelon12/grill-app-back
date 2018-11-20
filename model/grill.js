@@ -21,6 +21,10 @@ var GrillSchema = mongoose.Schema({
     available: {
         type: Boolean,
         default: true
+    },
+    rating: {
+        type: Number,
+        default: 0
     }
 },{
     timestamps: true
