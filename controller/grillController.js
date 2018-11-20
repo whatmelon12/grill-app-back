@@ -5,7 +5,7 @@ const {Grill} = require('./../model/grill');
 var GetGrillById = (req, res) => {
     var id = req.params.id;
     if(!ObjectID.isValid(id)){
-        return res.status(400).send();
+        return res.status(404).send({error: 'Object id is invalid'});
     }
 
     Grill.findOne({
@@ -13,11 +13,11 @@ var GetGrillById = (req, res) => {
         user_id: req.user._id
     }).then((grill) => {
         if(!grill){
-            return res.status(404).send();
+            return res.status(404).send({error: 'Entity not found'});
         }
         res.send({grill});
     }).catch((e) => {
-        res.status(400).send();
+        res.status(400).send({error: e});
     })
 } 
 
@@ -27,7 +27,7 @@ var GetGrills = (req, res) => {
     }).then((grill) => {
         res.send({grill});
     }).catch((e) => {
-        res.status(400).send(e);
+        res.status(400).send({error: e});
     })
 }
 
@@ -37,7 +37,7 @@ var CreateGrill = (req, res) => {
     new Grill(grill).save().then((grill) => {
         res.send({grill});
     }).catch((e) => {
-        res.status(400).send(e);
+        res.status(400).send({error: e});
     });
 }
 
@@ -47,7 +47,7 @@ var UpdateGrill = (req, res) => {
     console.log(grill_update);
 
     if(!ObjectID.isValid(id)){
-        return res.status(404).send();
+        return res.status(404).send({error: 'Object id is invalid'});
     }
 
     Grill.findOneAndUpdate({
@@ -55,7 +55,7 @@ var UpdateGrill = (req, res) => {
         user_id: req.user._id
     }, {$set: grill_update}, {new: true}).then((grill) => {
         if(!grill){
-            return res.status(404).send();
+            return res.status(404).send({error: 'Entity not found'});
         }
         res.send({todo});
     }).catch((e) => {
@@ -66,7 +66,7 @@ var UpdateGrill = (req, res) => {
 var DeleteGrill = (req, res) => {
     var id = req.params.id;
     if(!ObjectID.isValid(id)){
-        return res.status(404).send();
+        return res.status(404).send({error: 'Object id is invalid'});
     }
 
     Grill.findOneAndRemove({
@@ -74,11 +74,11 @@ var DeleteGrill = (req, res) => {
         user_id: req.user._id
     }).then((grill) => {
         if(!grill){
-            return res.status(404).send();
+            return res.status(404).send({error: 'Entity not found'});
         }
         res.send({grill});
     }).catch((e) => {
-        res.status(400).send();
+        res.status(400).send({error: e});
     });
 }
 
